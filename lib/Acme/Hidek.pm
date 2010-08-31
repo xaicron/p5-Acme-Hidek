@@ -3,7 +3,7 @@ package Acme::Hidek;
 use 5.008_001;
 use utf8;
 use Mouse;
-use Time::Piece;
+use Time::Piece ();
 use Time::HiRes qw(sleep);
 
 if ($^O eq 'MSWin32') {
@@ -26,7 +26,11 @@ has age => (
     is      => 'ro',
     isa     => 'Int',
     lazy    => 1,
-    default => sub { Time::Piece->localtime->year - BIRTH_YEAR },
+    default => sub {
+        int do {
+            Time::Piece->localtime - Time::Piece->strptime(sprintf('%04d-%02d-%02d', BIRTH_YEAR, BIRTH_MONTH, BIRTH_DAY), '%Y-%m-%d')
+        }->years;
+    },
 );
 
 has birthdate => (
