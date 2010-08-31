@@ -9,6 +9,7 @@ cc_warnings;
 
 requires 'Mouse';
 requires 'Time::Piece';
+requires 'Win32::Console::ANSI' if $^O eq 'MSWin32';
 
 test_requires 'Test::More' => 0.88; # done_testing()
 
